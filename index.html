@@ -1,0 +1,2707 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="artifact-type" content="tool">
+<meta name="design-style" content="pastel_princess">
+<title>عبقرية الضرب - Multiplication Princess</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  /* Pastel & Princess Color Palette */
+  --bg-dark: #fdf3f6; /* Light pink/lavender background */
+  --bg-card: rgba(255, 255, 255, 0.9);
+  --bg-card-hover: rgba(255, 255, 255, 1);
+  --primary-gold: #ec407a; /* Vibrant Pink */
+  --primary-gold-light: #ff80ab;
+  --primary-gold-dark: #c2185b;
+  --neon-cyan: #7e57c2; /* Soft Purple */
+  --neon-blue: #ba68c8;
+  --text-main: #4a148c; /* Dark purple text for readability */
+  --text-muted: #880e4f;
+  --text-dim: #ad1457;
+  --border-gold: rgba(236, 64, 122, 0.5);
+  --border-subtle: rgba(236, 64, 122, 0.2);
+  --success: #00c853;
+  --danger: #ff5252;
+  --warning: #ffb300;
+  --gold-gradient: linear-gradient(135deg, #ff80ab 0%, #ec407a 50%, #c2185b 100%);
+  --gold-glow: 0 5px 20px rgba(236, 64, 122, 0.3);
+  --cyan-glow: 0 5px 20px rgba(126, 87, 194, 0.3);
+  --red-glow: 0 0 20px rgba(255, 82, 82, 0.4);
+  --green-glow: 0 0 20px rgba(0, 200, 83, 0.4);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+  line-height: 1.6;
+}
+
+/* Cute Dot Background */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(#f8bbd0 2px, transparent 2px), radial-gradient(#f8bbd0 2px, transparent 2px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* Floating Magical Elements */
+.floating-bg {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0; overflow: hidden;
+}
+.float-item {
+  position: absolute;
+  bottom: -10vh;
+  font-size: 2.5rem;
+  opacity: 0.4;
+  animation: floatUp 18s linear infinite;
+  text-shadow: 0 0 10px rgba(255,255,255,0.8);
+}
+@keyframes floatUp {
+  0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Princess text styling */
+.title-gold {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  filter: drop-shadow(0 2px 4px rgba(236, 64, 122, 0.2));
+}
+
+.title-red-neon {
+  color: var(--primary-gold);
+  text-shadow: 0 2px 5px rgba(236, 64, 122, 0.3);
+  font-weight: 900;
+  letter-spacing: -0.5px;
+}
+
+.neon-cyan-text {
+  color: var(--neon-cyan);
+  font-weight: 800;
+}
+
+/* ===============================
+   START SCREEN LAYOUT
+================================ */
+#start {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.trophy-badge {
+  font-size: 72px;
+  margin-bottom: 4px;
+  animation: floatAnim 3.5s ease-in-out infinite;
+  filter: drop-shadow(0 4px 10px rgba(236, 64, 122, 0.3));
+}
+
+#start h1 {
+  font-size: clamp(34px, 5.5vw, 56px);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.2;
+}
+
+.start-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .start-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel-card {
+  background: var(--bg-card);
+  border: 3px solid var(--border-gold);
+  border-radius: 30px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(236, 64, 122, 0.1), inset 0 0 20px rgba(255, 255, 255, 0.8);
+}
+
+.panel-card h2, .panel-card h3 {
+  color: var(--text-main);
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.sub-tagline {
+  color: var(--primary-gold-dark);
+  font-size: 19px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 14px 18px;
+  margin-bottom: 12px;
+  border-radius: 20px;
+  border: 2px solid var(--primary-gold-light);
+  background: #ffffff;
+  color: var(--text-main);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  outline: none;
+  transition: all 0.3s;
+}
+
+.input-field:focus {
+  border-color: var(--primary-gold);
+  box-shadow: 0 0 15px rgba(236, 64, 122, 0.2);
+  transform: translateY(-2px);
+}
+
+.input-field::placeholder {
+  color: #f48fb1;
+  font-weight: 600;
+}
+
+/* Rules Section */
+.rules-container {
+  margin-top: 6px;
+}
+
+.rules-container h3 {
+  margin-bottom: 12px;
+}
+
+.rules-list {
+  list-style: none;
+}
+
+.rules-list li {
+  color: var(--text-main);
+  font-weight: 700;
+  font-size: 17px;
+  margin: 12px 0;
+  line-height: 1.6;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.rules-list li::before {
+  content: "🌸";
+  font-size: 20px;
+  line-height: 1.4;
+}
+
+/* Level Toggle Buttons */
+.level-toggle-group {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.level-option {
+  flex: 1;
+  cursor: pointer;
+}
+
+.level-option input {
+  display: none;
+}
+
+.level-option span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px 8px;
+  border-radius: 18px;
+  background: #ffffff;
+  border: 2px solid var(--border-gold);
+  color: var(--text-muted);
+  font-weight: 800;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.level-option input:checked + span {
+  border-color: var(--primary-gold);
+  color: #ffffff;
+  background: var(--gold-gradient);
+  box-shadow: var(--gold-glow);
+  transform: scale(1.05);
+}
+
+/* Tables Grid */
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.table-btn {
+  width: 100%;
+  padding: 14px 8px;
+  background: #ffffff;
+  border: 2px solid var(--primary-gold-light);
+  border-radius: 16px;
+  color: var(--text-main);
+  font-family: inherit;
+  font-weight: 900;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(236, 64, 122, 0.1);
+}
+
+.table-btn:hover {
+  background: var(--gold-gradient);
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-5px) scale(1.05);
+  box-shadow: var(--gold-glow);
+}
+
+.table-btn.comprehensive {
+  background: #f3e5f5;
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+}
+
+.table-btn.comprehensive:hover {
+  background: linear-gradient(135deg, #ab47bc 0%, #7e57c2 100%);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: var(--cyan-glow);
+}
+
+/* Credits Box */
+.credits-box {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 2px dashed var(--border-subtle);
+  text-align: center;
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.social-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #e8f5e9;
+  border: 2px solid #25D366;
+  color: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  text-decoration: none;
+}
+
+.social-btn:hover {
+  background: #25D366;
+  color: #ffffff;
+  transform: translateY(-4px) rotate(10deg);
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+}
+
+.social-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ===============================
+   GAME SCREEN
+================================ */
+#game {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 16px 20px 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Game Header Top Bar */
+.game-top-bar {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1.3fr;
+  align-items: center;
+  gap: 16px;
+  background: var(--bg-card);
+  border: 3px solid var(--border-gold);
+  border-radius: 25px;
+  padding: 12px 20px;
+  margin-bottom: 16px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(236, 64, 122, 0.15);
+}
+
+.top-bar-right {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.student-greeting {
+  font-size: 19px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap; /* السماح بالتفاف النص في الجوال */
+  text-align: center;
+  color: var(--text-main);
+}
+
+.nav-actions-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap; /* تعديل ليتناسب مع الجوال */
+  justify-content: center;
+}
+
+.nav-btn-mini {
+  background: #ffffff;
+  border: 2px solid var(--primary-gold-light);
+  color: var(--primary-gold-dark);
+  border-radius: 12px;
+  padding: 6px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 800;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  white-space: nowrap;
+}
+
+.nav-btn-mini:hover {
+  background: var(--primary-gold);
+  color: #ffffff;
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: var(--gold-glow);
+}
+
+.btn-danger-outline {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.btn-danger-outline:hover {
+  background: var(--danger) !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.top-bar-center {
+  text-align: center;
+}
+
+.top-bar-center h1 {
+  font-size: 26px;
+  line-height: 1.2;
+}
+
+.top-bar-left {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+}
+
+.lifelines-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* توسيط للجوال */
+  gap: 10px;
+  flex-wrap: wrap; /* السماح بالتفاف الأزرار السحرية */
+}
+
+.lifelines-label {
+  font-size: 15px;
+  font-weight: 900;
+  color: var(--neon-cyan);
+  white-space: nowrap;
+}
+
+.lifeline-btn {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  font-family: inherit;
+  font-size: 22px;
+  font-weight: 800;
+  background: #ffffff;
+  color: var(--primary-gold-dark);
+  cursor: pointer;
+  border: 3px solid var(--primary-gold-light); 
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(236, 64, 122, 0.15);
+}
+
+.lifeline-btn:hover:not(:disabled) {
+  background: var(--gold-gradient);
+  color: #ffffff;
+  border-color: transparent;
+  transform: scale(1.15) rotate(-5deg);
+  box-shadow: var(--gold-glow);
+}
+
+.lifeline-btn:disabled {
+  opacity: 0.4;
+  filter: grayscale(1);
+  cursor: not-allowed;
+  border-color: var(--border-subtle);
+  background: #f5f5f5;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Timer */
+.timer-widget {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: conic-gradient(var(--primary-gold) var(--p, 100%), #f8bbd0 0);
+  transition: background 0.15s linear;
+  box-shadow: 0 4px 15px rgba(236, 64, 122, 0.2);
+  flex-shrink: 0;
+}
+
+.timer-widget.low {
+  background: conic-gradient(var(--danger) var(--p, 100%), #ffcdd2 0);
+  animation: pulseRed 0.6s infinite;
+  box-shadow: var(--red-glow);
+}
+
+.timer-inner {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 900;
+  color: var(--primary-gold);
+}
+.timer-widget.low .timer-inner {
+  color: var(--danger);
+}
+
+/* Lesson Title Ribbon */
+.lesson-ribbon {
+  background: #ffffff;
+  border: 3px solid var(--primary-gold-light);
+  border-radius: 20px;
+  padding: 10px 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  box-shadow: 0 6px 15px rgba(236, 64, 122, 0.1);
+}
+
+.lesson-ribbon-title {
+  color: var(--primary-gold-dark);
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.lesson-ribbon-unit {
+  background: var(--gold-gradient);
+  color: #ffffff;
+  font-size: 14px;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-weight: 800;
+  box-shadow: var(--gold-glow);
+}
+
+/* Game Main Layout */
+.game-layout {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  gap: 24px;
+}
+
+/* Question Box */
+.qbox-container {
+  background: linear-gradient(180deg, #ffffff 0%, #fdf3f6 100%);
+  border: 4px solid var(--primary-gold);
+  border-radius: 35px;
+  padding: 28px 24px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(236, 64, 122, 0.15);
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.qbox-meta {
+  color: #ffffff;
+  font-size: 18px; 
+  font-weight: 800;
+  margin-bottom: 12px;
+  display: inline-block;
+  padding: 6px 18px;
+  border-radius: 15px;
+  background: var(--neon-cyan);
+  box-shadow: var(--cyan-glow);
+}
+
+.qbox-text {
+  font-size: clamp(28px, 4vw, 48px);
+  font-weight: 900;
+  line-height: 1.6;
+  color: var(--text-main);
+  min-height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 2px;
+  text-shadow: 1px 1px 0px rgba(255,255,255,1);
+}
+
+/* Answers Grid */
+.answers-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.ans-btn {
+  font-family: inherit;
+  color: var(--text-main);
+  font-size: 26px;
+  font-weight: 900;
+  padding: 16px 28px;
+  cursor: pointer;
+  text-align: center;
+  border-radius: 25px;
+  background: #ffffff;
+  border: 3px solid var(--primary-gold-light);
+  transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 6px 15px rgba(236, 64, 122, 0.1);
+}
+
+.ans-btn .letter-badge {
+  color: #ffffff;
+  background: var(--primary-gold-light);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  font-weight: 900;
+  font-size: 18px;
+  position: absolute;
+  right: 15px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.ans-btn:hover:not(:disabled) {
+  background: #fdf3f6;
+  border-color: var(--primary-gold);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 10px 20px rgba(236, 64, 122, 0.2);
+}
+
+.ans-btn:disabled {
+  cursor: not-allowed;
+}
+
+.ans-btn.selected {
+  background: linear-gradient(135deg, #ffb300 0%, #ff8f00 100%) !important;
+  border-color: #ff8f00 !important;
+  color: #ffffff !important;
+  transform: scale(1.05) !important;
+  box-shadow: 0 10px 25px rgba(255, 179, 0, 0.5) !important;
+}
+
+.ans-btn.correct {
+  background: linear-gradient(135deg, #00e676 0%, #00c853 100%) !important;
+  border-color: #00c853 !important;
+  color: #ffffff !important;
+  box-shadow: var(--green-glow) !important;
+  animation: pulseGreen 0.6s infinite;
+}
+.ans-btn.correct .letter-badge { background: #ffffff; color: #00c853; }
+
+.ans-btn.wrong {
+  background: linear-gradient(135deg, #ff5252 0%, #d50000 100%) !important;
+  border-color: #d50000 !important;
+  color: #ffffff !important;
+  box-shadow: var(--red-glow) !important;
+  animation: shake 0.5s ease-in-out;
+}
+.ans-btn.wrong .letter-badge { background: #ffffff; color: #d50000; }
+
+.ans-btn.gone {
+  opacity: 0.1 !important;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Magic Wand Effect */
+.magic-smoke {
+  animation: poofOut 0.7s forwards ease-in-out;
+}
+@keyframes poofOut {
+  0% { transform: scale(1); opacity: 1; filter: blur(0); }
+  50% { transform: scale(1.2) rotate(10deg); opacity: 0.8; filter: blur(2px) brightness(1.5); }
+  100% { transform: scale(0.5); opacity: 0; filter: blur(10px); visibility: hidden; }
+}
+
+/* Prize Ladder */
+.ladder-card {
+  background: var(--bg-card);
+  border: 3px solid var(--border-gold);
+  border-radius: 25px;
+  padding: 18px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 25px rgba(236, 64, 122, 0.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.ladder-card h3 {
+  color: var(--primary-gold-dark);
+  font-size: 20px;
+  font-weight: 900;
+  text-align: center;
+  margin-bottom: 12px;
+  border-bottom: 2px dashed var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+.ladder-list {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 6px;
+  list-style: none;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Cute scrollbar */
+.ladder-list::-webkit-scrollbar { width: 6px; }
+.ladder-list::-webkit-scrollbar-thumb { background: var(--primary-gold-light); border-radius: 10px; }
+
+.ladder-step {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 14px;
+  border-radius: 12px;
+  background: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-muted);
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
+
+.ladder-step.passed {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border-color: #a5d6a7;
+}
+
+.ladder-step.cur {
+  background: var(--gold-gradient);
+  color: #ffffff;
+  box-shadow: var(--gold-glow);
+  transform: scale(1.06);
+  font-weight: 900;
+  border-color: transparent;
+}
+
+/* ===============================
+   MODALS AND DIALOGS
+================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(74, 20, 140, 0.75);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 16px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-content {
+  background: #ffffff;
+  border: 4px solid var(--primary-gold);
+  border-radius: 35px;
+  padding: 35px 30px;
+  max-width: 620px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), inset 0 0 20px rgba(236, 64, 122, 0.05);
+  position: relative;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-icon {
+  font-size: 75px;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+
+.modal-title {
+  color: var(--primary-gold-dark);
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 12px;
+}
+
+.modal-text {
+  color: var(--text-main);
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.7;
+}
+
+/* Interactive Action Buttons */
+.actions-cluster {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.btn-action {
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 800;
+  padding: 14px 28px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-action:hover {
+  transform: translateY(-4px) scale(1.03);
+}
+
+.btn-gold {
+  background: var(--gold-gradient);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(236, 64, 122, 0.3);
+}
+
+.btn-gold:hover {
+  box-shadow: var(--gold-glow);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #00e676 0%, #00c853 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(0, 200, 83, 0.3);
+}
+
+.btn-success:hover {
+  box-shadow: var(--green-glow);
+}
+
+.btn-print {
+  background: linear-gradient(135deg, #42a5f5 0%, #1e88e5 100%);
+  color: #ffffff;
+  box-shadow: 0 6px 15px rgba(30, 136, 229, 0.3);
+}
+
+.btn-print:hover {
+  box-shadow: 0 0 20px rgba(30, 136, 229, 0.5);
+}
+
+.btn-outline {
+  background: #fdf3f6;
+  border: 2px solid var(--primary-gold-light);
+  color: var(--primary-gold-dark);
+}
+
+.btn-outline:hover {
+  background: #fce4ec;
+  border-color: var(--primary-gold);
+}
+
+/* Audience Poll Chart */
+.bars-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 190px;
+  margin: 20px 0 24px;
+  background: #fafafa;
+  border: 2px solid var(--border-gold);
+  border-radius: 20px;
+  padding: 16px 8px 10px;
+  box-shadow: inset 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+  width: 55px;
+}
+
+.bar-val {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 6px;
+}
+
+.bar-fill {
+  width: 100%;
+  background: var(--gold-gradient);
+  border-radius: 10px 10px 0 0;
+  transition: height 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 -4px 10px rgba(236, 64, 122, 0.3);
+}
+
+.bar-label {
+  color: var(--primary-gold-dark);
+  font-weight: 900;
+  margin-top: 10px;
+  font-size: 18px;
+}
+
+/* ===============================
+   CERTIFICATE SHEET DESIGN 
+================================ */
+#printableCertificate {
+  display: none; 
+}
+
+.cert-preview-card {
+  background: #fffdf9;
+  color: #0c182a;
+  border: 4px double #b8860b;
+  border-radius: 14px;
+  padding: 24px;
+  position: relative;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  margin-bottom: 20px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+
+.cert-preview-card * {
+  color: #0c182a;
+}
+
+.cert-header-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border-bottom: 2px solid #b8860b;
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+}
+
+.cert-header-right {
+  text-align: right;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.cert-header-center {
+  text-align: center;
+}
+
+.cert-header-center .emblem {
+  font-size: 38px;
+  margin-bottom: 2px;
+}
+
+.cert-header-left {
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.cert-body {
+  margin: 16px 0;
+  line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.cert-recipient-intro {
+  font-size: 17px;
+  color: #475569;
+}
+
+.cert-student-name {
+  font-size: 32px;
+  font-weight: 900;
+  color: #92400e;
+  margin: 10px 0;
+  padding: 6px 16px;
+  border-bottom: 2px dashed #b8860b;
+  display: inline-block;
+}
+
+.cert-class-tag {
+  font-size: 17px;
+  font-weight: 700;
+  color: #334155;
+  margin-bottom: 12px;
+}
+
+.cert-details-text {
+  font-size: 17px;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+
+.cert-lessons-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 14px;
+}
+
+.cert-lessons-table th, .cert-lessons-table td {
+  border: 1px solid #cbd5e1;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+.cert-lessons-table th {
+  background: #fef3c7;
+  color: #92400e;
+  font-weight: 800;
+}
+
+.cert-footer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
+  margin-top: 24px;
+  padding-top: 12px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.cert-signature-box {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.cert-stamp {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 2px dashed #b8860b;
+  margin: 4px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #b8860b;
+  font-weight: 800;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* ===============================
+   KEYFRAME ANIMATIONS
+================================ */
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulseRed {
+  0%, 100% { box-shadow: 0 0 10px rgba(255, 82, 82, 0.5); }
+  50% { box-shadow: 0 0 25px rgba(255, 82, 82, 0.9); }
+}
+
+@keyframes pulseGreen {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS QUERIES 
+   (تعديلات الجوال المضافة حديثاً)
+========================================= */
+@media (max-width: 1024px) {
+  .game-top-bar {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 12px;
+  }
+  .top-bar-left {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 680px) {
+  .answers-grid {
+    grid-template-columns: 1fr; /* إجابة واحدة في كل سطر */
+  }
+}
+
+@media (max-width: 600px) {
+  /* تعديل الأزرار العلوية */
+  .nav-actions-row {
+    justify-content: center;
+  }
+  /* تعديل وسائل المساعدة */
+  .lifelines-wrapper {
+    justify-content: center;
+  }
+  .lifeline-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
+  }
+  .lifelines-label {
+    display: none; /* إخفاء النص لتوفير المساحة */
+  }
+  /* تعديل تخطيط الهيدر لعدم التداخل مع المؤقت */
+  .top-bar-left {
+    flex-direction: column-reverse; /* وضع المؤقت فوق أو تحت الأزرار */
+    gap: 10px;
+  }
+  .timer-widget {
+    width: 55px;
+    height: 55px;
+  }
+  .timer-inner {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+  /* تعديل أزرار الإجابات والخطوط */
+  .ans-btn {
+    padding: 12px 16px;
+    font-size: 20px;
+  }
+  .qbox-text {
+    font-size: clamp(20px, 5vw, 28px) !important;
+    min-height: 60px;
+  }
+  .ans-btn .letter-badge {
+    width: 26px;
+    height: 26px;
+    font-size: 14px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tables-grid {
+    grid-template-columns: 1fr; /* زر واحد في كل صف للجداول */
+  }
+  .table-btn.comprehensive {
+    grid-column: span 1 !important; /* إصلاح عرض زر التقييم الشامل */
+  }
+}
+
+/* =========================================
+   PERFECT PRINT MEDIA QUERIES (UNTOUCHED)
+========================================= */
+@page {
+  size: A4 portrait;
+  margin: 20mm 15mm;
+}
+
+@media print {
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+  }
+
+  body::before, #start, #game, .modal-overlay:not(#certModal), .no-print,
+  button, .btn-action, .social-links, .ladder-card, header, .nav-actions-row, .floating-bg {
+    display: none !important;
+  }
+
+  #printableCertificate {
+    display: block !important; 
+    visibility: visible !important;
+    position: static !important;
+    width: 100% !important;
+    height: auto !important;
+    background: #ffffff !important;
+  }
+
+  .cert-inner-wrapper {
+    display: block !important;
+    width: 100% !important;
+    border: 4px solid #b8860b !important;
+    padding: 40px 30px !important;
+    background: #fffdf9 !important;
+    box-sizing: border-box !important;
+  }
+
+  .cert-header-grid { display: flex !important; justify-content: space-between !important; border-bottom: 2px solid #b8860b !important; padding-bottom: 15px !important; margin-bottom: 30px !important; }
+  .cert-body { display: block !important; text-align: center !important; }
+  #printableCertificate * { visibility: visible !important; color: #0c182a !important; }
+  .cert-student-name { color: #78350f !important; border-bottom: 2px dashed #b8860b !important; font-size: 40px !important; margin: 10px 0 !important; }
+  .cert-lessons-table { margin: 30px auto !important; width: 100% !important; font-size: 16px !important; border-collapse: collapse !important; }
+  .cert-lessons-table th { background-color: #fef3c7 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; font-size: 17px !important; }
+  .cert-footer-grid { display: grid !important; grid-template-columns: 1fr 1fr 1fr !important; margin-top: 40px !important; }
+}
+</style>
+</head>
+<body>
+
+<!-- Floating Background Emojis -->
+<div class="floating-bg no-print">
+  <div class="float-item" style="left: 10%; animation-delay: 0s;">🌸</div>
+  <div class="float-item" style="left: 30%; animation-delay: 4s;">➕</div>
+  <div class="float-item" style="left: 55%; animation-delay: 2s;">🦄</div>
+  <div class="float-item" style="left: 75%; animation-delay: 6s;">✖️</div>
+  <div class="float-item" style="left: 90%; animation-delay: 1s;">🎀</div>
+  <div class="float-item" style="left: 20%; animation-delay: 8s;">➗</div>
+  <div class="float-item" style="left: 85%; animation-delay: 3.5s;">✨</div>
+  <div class="float-item" style="left: 45%; animation-delay: 7s;">➖</div>
+  <div class="float-item" style="left: 65%; animation-delay: 9s;">👧🏻</div>
+</div>
+
+<div id="startExitBtn" style="position: absolute; top: 16px; left: 16px; z-index: 10;">
+  <button class="nav-btn-mini btn-danger-outline" style="padding: 8px 16px; font-size: 14px;" onclick="exitApplication()" title="خروج من اللعبة">🚪 خروج</button>
+</div>
+
+<!-- ===============================
+     START SCREEN
+================================ -->
+<section id="start">
+  <div class="trophy-badge">🌸 🏆 🌸</div>
+  <h1 class="title-gold" style="line-height: 1.1; margin-bottom: 10px;">عبقرية الضرب<br><span style="font-size: 0.6em; color: var(--text-muted); font-weight: 800;">Multiplication Princess</span></h1>
+
+  <div class="start-grid">
+    <!-- RIGHT PANEL: Rules & Credits -->
+    <div class="panel-card">
+      <p class="sub-tagline">مراجعة وإتقان جداول الضرب 🎀</p>
+      
+      <!-- Rules List -->
+      <div class="rules-container" style="margin-top: 20px;">
+        <h3>قواعد اللعبة</h3>
+        <ul class="rules-list">
+          <li>اختاري جدول الضرب الذي ترغبين بمراجعته من القائمة، أو تقييم شامل.</li>
+          <li>15 ثانية للإجابة في المستوى المبتدئ و 10 ثواني في المستوى المتقدم.</li>
+          <li>وسائل مساعدة سحرية: 50:50، اتصال بصديقة، الجمهور، إيقاف المؤقت، وعصا سحرية 🪄.</li>
+          <li>يفضل اللعب بوضع ملء الشاشة ، اضغطي F11 لتكبير العرض.</li>
+          <li>تستطيعين طباعة شهادتك المعتمدة عند اجتيازك للتحدي بنجاح 🦄.</li>
+        </ul>
+      </div>
+
+      <!-- Credits Box -->
+      <div class="credits-box">
+        <div style="font-family: inherit; color: var(--primary-gold); text-shadow: 0 2px 4px rgba(236, 64, 122, 0.2); margin-bottom: 12px; font-weight: 900; line-height: 1.6;">
+          <div style="font-size: 20px;">اعداد وتصميم المعلمة : شاهرة الحسيني</div>
+          <div style="font-size: 18px;">مديرة المدرسة الأستاذة: نورة السحامي</div>
+          <div style="font-size: 18px;">ابتدائية علب والجوة بظهران الجنوب</div>
+        </div>
+        <div class="social-links">
+          <a href="https://wa.me/966581282823" target="_blank" class="social-btn" title="تواصل عبر واتساب">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEFT PANEL: Student Info & Selection -->
+    <div class="panel-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+        <h3 style="margin-bottom:0;">بيانات البطلة واختيار الجدول 👧🏻</h3>
+        <button class="nav-btn-mini btn-outline" style="border-color: var(--danger); color: var(--danger); font-size:13px; padding:6px 10px;" onclick="resetPlayer()" title="مسح بيانات اللاعب الحالي للبدء من جديد">🔄 بطلة جديدة</button>
+      </div>
+      <input type="text" id="studentName" placeholder="اكتبي اسمك الثلاثي يا بطلة" class="input-field">
+      <input type="text" id="studentClass" placeholder="الصف الدراسي (مثال: سادس / 1)" class="input-field">
+
+      <!-- Level Selection -->
+      <div class="level-toggle-group">
+        <label class="level-option">
+          <input type="radio" name="gameLevel" value="beginner" onchange="setLevel('beginner')">
+          <span>🌱 مبتدئ (15 ثانية)</span>
+        </label>
+        <label class="level-option">
+          <input type="radio" name="gameLevel" value="advanced" checked onchange="setLevel('advanced')">
+          <span>⚡ متقدم (10 ثواني)</span>
+        </label>
+      </div>
+
+      <!-- Multiplication Tables Grid -->
+      <div class="tables-grid">
+        <button class="table-btn" onclick="selectTable(1)">جدول 1</button>
+        <button class="table-btn" onclick="selectTable(2)">جدول 2</button>
+        <button class="table-btn" onclick="selectTable(3)">جدول 3</button>
+        <button class="table-btn" onclick="selectTable(4)">جدول 4</button>
+        <button class="table-btn" onclick="selectTable(5)">جدول 5</button>
+        <button class="table-btn" onclick="selectTable(6)">جدول 6</button>
+        <button class="table-btn" onclick="selectTable(7)">جدول 7</button>
+        <button class="table-btn" onclick="selectTable(8)">جدول 8</button>
+        <button class="table-btn" onclick="selectTable(9)">جدول 9</button>
+        <button class="table-btn" onclick="selectTable(10)">جدول 10</button>
+        <button class="table-btn comprehensive" onclick="showComprehensiveModal()">🌟 تقييم شامل</button>
+      </div>
+
+      <!-- Preview Certificate Button -->
+      <div id="prevCertBox" class="hidden" style="margin-top: 14px; text-align: center;">
+        <button class="btn-action btn-print" style="width: 100%; justify-content: center;" onclick="showSavedCertificate()">
+          🖨️ عرض وطباعة شهادة إنجازاتي السابقة
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===============================
+     GAMEPLAY SCREEN
+================================ -->
+<section id="game" class="hidden">
+  <header class="game-top-bar">
+    <div class="top-bar-right">
+      <div class="student-greeting">
+        <span id="greetingPrefix">مرحباً بعبقرية الرياضيات:</span>
+        <span id="gameStudentName" class="neon-cyan-text">طالب المستقبل</span>
+      </div>
+      <div class="nav-actions-row">
+        <button class="nav-btn-mini btn-danger-outline" onclick="exitApplication()" title="خروج من اللعبة">🚪 خروج</button>
+        <button class="nav-btn-mini" onclick="confirmExitGame()" title="العودة للقائمة">🏠 القائمة</button>
+        <button class="nav-btn-mini" onclick="confirmRestartLesson()" title="إعادة المحاولة">🔄 إعادة</button>
+        <button class="nav-btn-mini" id="soundToggleBtn" onclick="toggleSound()" title="كتم أو تشغيل المؤثرات الصوتية">🔊 الصوت</button>
+        <button class="nav-btn-mini" onclick="toggleFullscreen()" title="وضع ملء الشاشة (F11)">⛶ ملء الشاشة</button>
+      </div>
+    </div>
+
+    <div class="top-bar-center">
+      <h1 class="title-red-neon" style="font-size: 32px;">عبقرية الضرب 🌸</h1>
+    </div>
+
+    <div class="top-bar-left">
+      <div class="lifelines-wrapper">
+        <span class="lifelines-label">مساعدة سحرية</span>
+        <button class="lifeline-btn" id="l50" onclick="useFiftyFifty()" title="حذف إجابتين (50:50)" disabled>✂️</button>
+        <button class="lifeline-btn" id="lph" onclick="usePhoneAFriend()" title="اتصال بصديقة" disabled>📱</button>
+        <button class="lifeline-btn" id="lau" onclick="useAudiencePoll()" title="استطلاع رأي الطالبات" disabled>👧🏻</button>
+        <button class="lifeline-btn" id="lstop" onclick="usePauseTimer()" title="إيقاف المؤقت لسؤال واحد" disabled>⏳</button>
+        <button class="lifeline-btn" id="lbomb" onclick="useFazaaBomb()" title="عصا سحرية: إخفاء الإجابات الخاطئة" disabled>🪄</button>
+      </div>
+
+      <div class="timer-widget" id="timerWidget">
+        <div class="timer-inner" id="timerNum">10</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="lesson-ribbon">
+    <span class="lesson-ribbon-unit" id="ribbonUnitBadge">الرياضيات</span>
+    <span class="lesson-ribbon-title" id="ribbonLessonTitle">جدول الضرب 1</span>
+  </div>
+
+  <div class="game-layout">
+    <div>
+      <div class="qbox-container" id="qbox">
+        <div class="qbox-meta" id="qnumText">السؤال 1 من 10</div>
+        <div class="qbox-text" id="qtext" style="direction: ltr;">1 × 1 = ?</div>
+      </div>
+      <div class="answers-grid" id="answersContainer">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+
+    <div class="ladder-card">
+      <h3>سلم الجوائز والنقاط ✨</h3>
+      <ul class="ladder-list" id="ladderList">
+        <!-- Injected dynamically -->
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===============================
+     MODAL DIALOG CONTAINER
+================================ -->
+<div class="modal-overlay hidden" id="gameModal" style="z-index: 9999;">
+  <div class="modal-content" id="modalBox">
+    <!-- Injected dynamically -->
+  </div>
+</div>
+
+<!-- ===============================
+     STANDALONE PRINTABLE CERTIFICATE
+================================ -->
+<div id="printableCertificate">
+  <div class="cert-inner-wrapper">
+    <div class="cert-header-grid">
+      <div class="cert-header-right">
+        <div>المملكة العربية السعودية</div>
+        <div>وزارة التعليم</div>
+        <div id="printAdminCity">إدارة التعليم بمنطقة عسير</div>
+      </div>
+      <div class="cert-header-center"></div>
+      <div class="cert-header-left">
+        <div id="printSchoolName">ابتدائية علب والجوة بظهران الجنوب</div>
+        <div>المادة: الرياضيات</div>
+        <div id="printDate">التاريخ: 1448 هـ</div>
+      </div>
+    </div>
+
+    <div class="cert-body">
+      <div class="emblem" style="font-size: 38px; margin-bottom: 2px;">🏆</div>
+      <h2 class="cert-main-title" style="font-size: 28px; color: #92400e; font-weight: 900;">شهادة تفوق ونجاح</h2>
+      <div style="font-size: 15px; font-weight: 700; color: #475569; margin-bottom: 20px;">مسابقة عبقري الضرب</div>
+
+      <p class="cert-recipient-intro" id="printAwardIntro">
+        تَشْهَدُ إدارةُ المدرسةِ ومُعَلِّمَةُ المادةِ بأنّ:
+      </p>
+
+      <div class="cert-student-name" id="printStudentName">
+        اسم الطالب
+      </div>
+
+      <div class="cert-class-tag" id="printStudentClass">
+        الصف الدراسي
+      </div>
+
+      <p class="cert-details-text" id="printAwardBody">
+        قد اجتاز بتفوق وجدارة اختبارات جداول الضرب.
+      </p>
+    </div>
+
+    <div class="cert-footer-grid">
+      <div class="cert-signature-box">
+        <div id="printTeacherTitle">معلمة المادة:</div>
+        <div id="printTeacherName" style="color: #92400e; font-size: 18px; margin-top: 4px;">شاهرة الحسيني</div>
+      </div>
+      <div class="cert-signature-box">
+        <div class="cert-stamp">ختم التميز<br>1,000,000</div>
+      </div>
+      <div class="cert-signature-box">
+        <div id="printPrincipalTitle" style="color: #475569; font-size: 18px;">المديرة:</div>
+        <div style="color: #92400e; font-size: 18px; margin-top: 4px;">نورة السحامي</div> 
+      </div>
+    </div>
+  </div>
+  
+  <div id="printLessonsTableWrapper" style="width: 100%;">
+    <!-- Injected if multiple tables passed -->
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   MULTIPLICATION GENIUS - EDUCATIONAL SYSTEM
+   ===================================================================== */
+
+// Web Audio API Sound Synthesizer
+let audioCtx = null;
+let soundEnabled = true;
+
+function initAudio() {
+  if (!audioCtx) {
+    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+    if (AudioContextClass) audioCtx = new AudioContextClass();
+  }
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+}
+
+function playTickSound() {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(900, audioCtx.currentTime);
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.04);
+  } catch(e){}
+}
+
+function playSelectSound() {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+  try {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(520, audioCtx.currentTime + 0.1);
+    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.12);
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.12);
+  } catch(e){}
+}
+
+function playCorrectSound() {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+  try {
+    const notes = [523.25, 659.25, 783.99, 1046.50];
+    notes.forEach((freq, idx) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      const startTime = audioCtx.currentTime + idx * 0.09;
+      osc.frequency.setValueAtTime(freq, startTime);
+      gain.gain.setValueAtTime(0.15, startTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, startTime + 0.35);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(startTime);
+      osc.stop(startTime + 0.35);
+    });
+  } catch(e){}
+}
+
+function playWrongSound() {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+  try {
+    const osc1 = audioCtx.createOscillator();
+    const osc2 = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc1.type = 'square';
+    osc2.type = 'square';
+    osc1.frequency.setValueAtTime(150, audioCtx.currentTime);
+    osc2.frequency.setValueAtTime(160, audioCtx.currentTime);
+    osc1.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.5);
+    osc2.frequency.exponentialRampToValueAtTime(105, audioCtx.currentTime + 0.5);
+    gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc1.start(); osc2.start();
+    osc1.stop(audioCtx.currentTime + 0.5); osc2.stop(audioCtx.currentTime + 0.5);
+  } catch(e){}
+}
+
+function playBombSound() {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+  try {
+    const bufferSize = audioCtx.sampleRate * 0.6;
+    const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+    const data = buffer.getChannelData(0);
+    for (let i = 0; i < bufferSize; i++) {
+      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+    }
+    const noise = audioCtx.createBufferSource();
+    noise.buffer = buffer;
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(800, audioCtx.currentTime);
+    filter.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.5);
+    const gain = audioCtx.createGain();
+    gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.6);
+    noise.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+    noise.start();
+    noise.stop(audioCtx.currentTime + 0.6);
+  } catch(e){}
+}
+
+function playFanfareSound() {
+  if (!soundEnabled) return;
+  initAudio();
+  if (!audioCtx) return;
+  try {
+    const chords = [
+      [523.25, 659.25, 783.99],
+      [587.33, 739.99, 880.00],
+      [659.25, 830.61, 987.77],
+      [783.99, 987.77, 1046.50, 1318.51]
+    ];
+    chords.forEach((chord, step) => {
+      chord.forEach(freq => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        const start = audioCtx.currentTime + step * 0.24;
+        const dur = (step === chords.length - 1) ? 1.2 : 0.26;
+        osc.frequency.setValueAtTime(freq, start);
+        gain.gain.setValueAtTime(0.1, start);
+        gain.gain.exponentialRampToValueAtTime(0.001, start + dur);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(start);
+        osc.stop(start + dur);
+      });
+    });
+  } catch(e){}
+}
+
+function toggleSound() {
+  soundEnabled = !soundEnabled;
+  const btn = $('soundToggleBtn');
+  if (btn) {
+    btn.textContent = soundEnabled ? '🔊 الصوت' : '🔇 مكتوم';
+    btn.style.color = soundEnabled ? 'var(--text-main)' : 'var(--danger)';
+  }
+  if (soundEnabled) playSelectSound();
+}
+
+/* =====================================================================
+   APP STATE & VARIABLES
+   ===================================================================== */
+let currentTable = null; 
+let currentQuestions = [];
+let currentPrizes = [];
+
+let curQIndex = 0;
+let isAnswered = false;
+let hiddenIndices = [];
+let timeLimit = 10;
+let timeLeft = 10;
+let timerInterval = null;
+let lessonStartTime = 0; 
+let gameLevel = 'advanced'; 
+
+// Lifelines state
+let lifelinesUsed = {
+  fifty: false,
+  phone: false,
+  audience: false,
+  pause: false,
+  bomb: false
+};
+
+// Cumulative session progress 
+let sessionCompletedLessons = [];
+
+// Helper DOM selector
+const $ = (id) => document.getElementById(id);
+
+/* =====================================================================
+   GENDER DETECTION HELPER
+   ===================================================================== */
+const FEMININE_NAMES = new Set([
+  'مريم', 'فاطمة', 'فاطمه', 'عائشة', 'عائشه', 'خديجة', 'خديجه', 'زينب', 'سارة', 'ساره', 'نورة', 'نوره',
+  'ريم', 'هند', 'شهد', 'رغد', 'رهف', 'حنين', 'جنى', 'جود', 'ليان', 'دانة', 'دانه', 'أمل', 'امل',
+  'بدور', 'لطيفة', 'لطيفه', 'أسماء', 'اسماء', 'شيماء', 'نجلاء', 'هيفاء', 'مها', 'هناء', 'منى', 'هدى',
+  'رنا', 'سلمى', 'لمى', 'ياسمين', 'تسنيم', 'إيمان', 'ايمان', 'عبير', 'روان', 'رزان', 'بيان', 'خلود',
+  'غادة', 'غاده', 'جميلة', 'جميله', 'نوال', 'منال', 'أروى', 'اروى', 'لمياء', 'صفاء', 'وفاء', 'سمية',
+  'سميه', 'أميرة', 'اميره', 'أفنان', 'افنان', 'بشرى', 'يارا', 'ريماس', 'سحاب', 'جواهر', 'مشاعل',
+  'عفاف', 'وسن', 'وجد', 'ترف', 'ريف', 'غلا', 'تالا', 'سما', 'جوري', 'تولين', 'وتين', 'إيلاف'
+]);
+
+function isFeminine(fullName) {
+  if (!fullName) return false;
+  const clean = fullName.replace(/^(أ\.|أ|أستاذة|المعلمة|د\.)\s*/, '').trim();
+  const firstWord = clean.split(/\s+/)[0];
+  if (FEMININE_NAMES.has(firstWord)) return true;
+  if (firstWord.endsWith('ة') || firstWord.endsWith('ه') || firstWord.endsWith('ى') || firstWord.endsWith('اء')) {
+    const maleExceptions = new Set(['حمزة', 'حمزه', 'طلحة', 'طلحه', 'أسامة', 'اسامه', 'قتادة', 'قتاده', 'عبيدة', 'عبيده', 'معاوية', 'معاويه', 'حذيفة', 'حذيفه']);
+    if (maleExceptions.has(firstWord)) return false;
+    return true;
+  }
+  return false;
+}
+
+/* =====================================================================
+   INITIALIZATION & PERSISTENCE
+   ===================================================================== */
+window.addEventListener('DOMContentLoaded', async () => {
+  localStorage.removeItem('whowants_history');
+  try {
+    const localHist = localStorage.getItem('whowants_history_math');
+    if (localHist) {
+      const state = JSON.parse(localHist);
+      if (state.studentName) $('studentName').value = state.studentName;
+      if (state.studentClass) $('studentClass').value = state.studentClass;
+      if (state.completedLessons && Array.isArray(state.completedLessons)) {
+        sessionCompletedLessons = state.completedLessons;
+        updatePrevCertBox();
+      }
+    }
+  } catch(e) {}
+});
+
+$('studentName').addEventListener('input', function() {
+  const currentName = this.value.trim();
+  try {
+    const localHist = localStorage.getItem('whowants_history_math');
+    if (localHist) {
+      const state = JSON.parse(localHist);
+      if (state.studentName && state.studentName !== currentName && currentName !== '') {
+         $('prevCertBox').classList.add('hidden');
+      } else if (sessionCompletedLessons.length > 0) {
+         $('prevCertBox').classList.remove('hidden');
+      }
+    }
+  } catch(e) {}
+});
+
+function saveCurrentAppState() {
+  const state = {
+    studentName: $('studentName').value.trim(),
+    studentClass: $('studentClass').value.trim(),
+    completedLessons: sessionCompletedLessons
+  };
+  try {
+    localStorage.setItem('whowants_history_math', JSON.stringify(state));
+  } catch(e) {}
+}
+
+function updatePrevCertBox() {
+  const box = $('prevCertBox');
+  if (box) {
+    if (sessionCompletedLessons.length > 0) {
+      box.classList.remove('hidden');
+    } else {
+      box.classList.add('hidden');
+    }
+  }
+}
+
+function resetPlayer() {
+  playSelectSound();
+  if(confirm("هل أنت متأكدة من رغبتك في مسح بيانات وإنجازات اللاعبة الحالية للبدء ببطلة جديدة؟ 🌸")) {
+    $('studentName').value = '';
+    $('studentClass').value = '';
+    sessionCompletedLessons = [];
+    localStorage.removeItem('whowants_history_math');
+    updatePrevCertBox();
+    $('studentName').focus();
+  }
+}
+
+function setLevel(lvl) {
+  gameLevel = lvl;
+  playSelectSound();
+}
+
+function toggleFullscreen() {
+  try {
+    if (!document.fullscreenElement) {
+      const docEl = document.documentElement;
+      if (docEl.requestFullscreen) docEl.requestFullscreen().catch(()=>{});
+      else if (docEl.webkitRequestFullscreen) docEl.webkitRequestFullscreen();
+      else if (docEl.msRequestFullscreen) docEl.msRequestFullscreen();
+    } else {
+      if (document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+    }
+  } catch(e){}
+}
+
+/* =====================================================================
+   QUESTIONS & PRIZES GENERATION
+   ===================================================================== */
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+function createQuestionObject(a, b) {
+    let correct = a * b;
+    let options = new Set([correct]);
+    
+    while(options.size < 4) {
+        let wA = a + (Math.floor(Math.random()*3)-1);
+        let wB = b + (Math.floor(Math.random()*3)-1);
+        if(wA < 1) wA = a + 1;
+        if(wB < 1) wB = b + 1;
+        
+        let wrong = wA * wB;
+        if (wrong > 0 && wrong !== correct) {
+            options.add(wrong);
+        } else {
+            let rnd = correct + (Math.floor(Math.random()*10)-4);
+            if (rnd > 0 && rnd !== correct) options.add(rnd);
+        }
+    }
+    
+    let optsArr = Array.from(options);
+    optsArr = shuffleArray(optsArr);
+    
+    return {
+        q: `${a} × ${b} = ?`,
+        a: optsArr.map(String),
+        c: optsArr.indexOf(correct)
+    };
+}
+
+function generateTableQuestions(tableNum) {
+    let qs = [];
+    for (let i = 1; i <= 10; i++) {
+        qs.push(createQuestionObject(tableNum, i));
+    }
+    return shuffleArray(qs);
+}
+
+function generateComprehensiveQuestions(count) {
+    let qs = [];
+    for (let i = 0; i < count; i++) {
+        let a = Math.floor(Math.random() * 10) + 1;
+        let b = Math.floor(Math.random() * 10) + 1;
+        qs.push(createQuestionObject(a, b));
+    }
+    return qs;
+}
+
+function generatePrizes(count) {
+    let prizes = [];
+    for (let i = 0; i < count; i++) {
+        if (i === count - 1) {
+            prizes.push("1,000,000");
+        } else {
+            let val = Math.round(100 * Math.pow(10000, i / (count - 1)));
+            if (val > 10000) val = Math.round(val / 1000) * 1000;
+            else if (val > 1000) val = Math.round(val / 100) * 100;
+            else val = Math.round(val / 10) * 10;
+            prizes.push(val.toLocaleString('en-US'));
+        }
+    }
+    return prizes;
+}
+
+/* =====================================================================
+   STARTING A LESSON
+   ===================================================================== */
+function checkStudentName() {
+  const name = $('studentName').value.trim();
+  if (!name) {
+    playWrongSound();
+    openModal(`
+      <div class="modal-icon no-print">⚠️</div>
+      <h2 class="modal-title no-print">تنبيه</h2>
+      <p class="modal-text no-print">الرجاء كتابة اسمك في خانة بيانات الطالبة قبل بدء التحدي لتسجيل شهادتك باسمك! 🌸</p>
+      <button class="btn-action btn-gold no-print" onclick="closeModal(); document.getElementById('studentName').focus();">حسناً، فهمت</button>
+    `);
+    return false;
+  }
+  return true;
+}
+
+function selectTable(tableNum) {
+  if (!checkStudentName()) return;
+
+  const name = $('studentName').value.trim();
+  try {
+    const localHist = localStorage.getItem('whowants_history_math');
+    if (localHist) {
+      const state = JSON.parse(localHist);
+      if (state.studentName && state.studentName !== name) {
+        sessionCompletedLessons = []; 
+      }
+    }
+  } catch(e) {}
+
+  playSelectSound();
+  initAudio();
+  saveCurrentAppState();
+
+  currentTable = tableNum;
+  currentQuestions = generateTableQuestions(tableNum);
+  currentPrizes = ["100", "500", "1,000", "5,000", "10,000", "50,000", "100,000", "250,000", "500,000", "1,000,000"];
+
+  setupGameScreen(`جدول ${tableNum}`);
+  restartLesson();
+}
+
+function showComprehensiveModal() {
+  playSelectSound();
+  if (!checkStudentName()) return;
+
+  openModal(`
+      <div class="modal-icon no-print">🌟</div>
+      <h2 class="modal-title no-print">التقييم الشامل</h2>
+      <p class="modal-text no-print">أدخلي عدد الأسئلة المطلوبة (من 5 إلى 100):</p>
+      <input type="number" id="compQuestionCount" class="input-field" min="5" max="100" value="20" style="width: 120px; text-align: center; margin: 0 auto 20px; display: block; font-size: 20px;">
+      <div class="actions-cluster no-print">
+          <button class="btn-action btn-gold" onclick="startComprehensive()">ابدأ التقييم ✨</button>
+          <button class="btn-action btn-outline" onclick="closeModal()">إلغاء</button>
+      </div>
+  `);
+}
+
+function startComprehensive() {
+  const countInput = $('compQuestionCount');
+  let count = parseInt(countInput.value);
+  if (isNaN(count) || count < 5 || count > 100) {
+      alert("الرجاء إدخال عدد صحيح بين 5 و 100");
+      return;
+  }
+  
+  closeModal();
+  playSelectSound();
+  initAudio();
+  saveCurrentAppState();
+
+  currentTable = 'comp';
+  currentQuestions = generateComprehensiveQuestions(count);
+  currentPrizes = generatePrizes(count);
+
+  setupGameScreen('تقييم شامل لجميع الجداول');
+  restartLesson();
+}
+
+function setupGameScreen(titleStr) {
+  const name = $('studentName').value.trim();
+  const isGirl = isFeminine(name);
+  
+  $('greetingPrefix').textContent = isGirl ? 'مرحباً بعبقرية الرياضيات:' : 'مرحباً بعبقري الرياضيات:';
+  $('gameStudentName').textContent = name;
+  $('ribbonUnitBadge').textContent = 'الرياضيات';
+  $('ribbonLessonTitle').textContent = titleStr;
+
+  timeLimit = (gameLevel === 'beginner') ? 15 : 10;
+
+  const startExit = $('startExitBtn');
+  if(startExit) startExit.classList.add('hidden');
+  
+  $('start').classList.add('hidden');
+  $('game').classList.remove('hidden');
+}
+
+function restartLesson() {
+  curQIndex = 0;
+  lifelinesUsed = { fifty: false, phone: false, audience: false, pause: false, bomb: false };
+  ['l50', 'lph', 'lau', 'lstop', 'lbomb'].forEach(id => {
+    const el = $(id);
+    if (el) el.disabled = false;
+  });
+  
+  lessonStartTime = Date.now(); 
+  closeModal();
+  loadQuestion();
+}
+
+/* =====================================================================
+   QUESTION RENDERING & LOGIC
+   ===================================================================== */
+function loadQuestion() {
+  if (!currentQuestions || currentQuestions.length === 0 || !currentQuestions[curQIndex]) return;
+  isAnswered = false;
+  hiddenIndices = [];
+  const q = currentQuestions[curQIndex];
+
+  const qnumText = $('qnumText');
+  if (qnumText) qnumText.textContent = `السؤال ${curQIndex + 1} من ${currentQuestions.length}`;
+  const qtext = $('qtext');
+  if (qtext) qtext.textContent = q.q;
+
+  const box = $('qbox');
+  if (box) {
+    box.style.animation = 'none';
+    box.offsetHeight;
+    box.style.animation = '';
+  }
+
+  const container = $('answersContainer');
+  if (container) {
+    const letters = ['أ', 'ب', 'ج', 'د'];
+    container.innerHTML = (q.a || []).map((optText, i) => {
+      return `
+        <button class="ans-btn" id="ansBtn${i}" style="animation: fadeIn 0.3s ease-out ${i * 0.08}s backwards" onclick="handleAnswer(${i})">
+          <span class="letter-badge">${letters[i]}</span>
+          <span style="direction: ltr;">${optText}</span>
+        </button>
+      `;
+    }).join('');
+  }
+
+  renderLadder();
+  startTimer();
+  updateLifelinesUI();
+}
+
+function renderLadder() {
+  const ladder = $('ladderList');
+  if (!ladder || !currentPrizes) return;
+  ladder.innerHTML = currentPrizes.map((p, i) => {
+    const isPassed = i < curQIndex;
+    const isCur = i === curQIndex;
+    let cls = 'ladder-step';
+    if (isPassed) cls += ' passed';
+    if (isCur) cls += ' cur';
+
+    return `
+      <li class="${cls}">
+        <span>${i + 1}</span>
+        <span>${p} نقطة</span>
+      </li>
+    `;
+  }).join('');
+  
+  const curItem = ladder.querySelector('.cur');
+  if(curItem) {
+      curItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function getAnswerButtons() {
+  return [...document.querySelectorAll('.ans-btn')];
+}
+
+function updateLifelinesUI() {
+  const hasQ = currentQuestions && currentQuestions.length > 0;
+  const l50 = $('l50'); if (l50) l50.disabled = lifelinesUsed.fifty || isAnswered || !hasQ;
+  const lph = $('lph'); if (lph) lph.disabled = lifelinesUsed.phone || isAnswered || !hasQ;
+  const lau = $('lau'); if (lau) lau.disabled = lifelinesUsed.audience || isAnswered || !hasQ;
+  const lstop = $('lstop'); if (lstop) lstop.disabled = lifelinesUsed.pause || isAnswered || !hasQ;
+  const lbomb = $('lbomb'); if (lbomb) lbomb.disabled = lifelinesUsed.bomb || isAnswered || !hasQ;
+}
+
+/* =====================================================================
+   TIMER ENGINE
+   ===================================================================== */
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = timeLimit;
+  drawTimer();
+  
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    drawTimer();
+    playTickSound();
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      handleTimeUp();
+    }
+  }, 1000);
+}
+
+function drawTimer() {
+  const widget = $('timerWidget');
+  if (widget) {
+    const percent = (timeLeft / timeLimit) * 100;
+    widget.style.setProperty('--p', `${percent}%`);
+    widget.classList.toggle('low', timeLeft <= Math.floor(timeLimit/3));
+  }
+  const tNum = $('timerNum');
+  if (tNum) tNum.textContent = timeLeft;
+}
+
+function handleTimeUp() {
+  if (isAnswered || !currentQuestions || !currentQuestions[curQIndex]) return;
+  isAnswered = true;
+  updateLifelinesUI();
+  playWrongSound();
+
+  const btns = getAnswerButtons();
+  btns.forEach(b => b.disabled = true);
+  const correctIdx = currentQuestions[curQIndex].c;
+  if (btns[correctIdx]) btns[correctIdx].classList.add('correct');
+
+  setTimeout(() => {
+    handleGameOver(false, "0"); 
+  }, 1600);
+}
+
+/* =====================================================================
+   ANSWER PROCESSING
+   ===================================================================== */
+function handleAnswer(choiceIdx) {
+  if (isAnswered || !currentQuestions || !currentQuestions[curQIndex]) return;
+  isAnswered = true;
+  clearInterval(timerInterval);
+  updateLifelinesUI();
+  playSelectSound();
+
+  const btns = getAnswerButtons();
+  btns.forEach(b => b.disabled = true);
+  if (btns[choiceIdx]) btns[choiceIdx].classList.add('selected');
+
+  const correctIdx = currentQuestions[curQIndex].c;
+
+  setTimeout(() => {
+    if (btns[choiceIdx]) btns[choiceIdx].classList.remove('selected');
+
+    if (choiceIdx === correctIdx) {
+      if (btns[choiceIdx]) btns[choiceIdx].classList.add('correct');
+      playCorrectSound();
+
+      setTimeout(() => {
+        if (curQIndex === currentQuestions.length - 1) {
+          handleGameOver(true, currentPrizes[currentPrizes.length - 1]);
+        } else {
+          curQIndex++;
+          loadQuestion();
+        }
+      }, 1600);
+
+    } else {
+      if (btns[choiceIdx]) btns[choiceIdx].classList.add('wrong');
+      if (btns[correctIdx]) btns[correctIdx].classList.add('correct');
+      playWrongSound();
+
+      setTimeout(() => {
+        handleGameOver(false, "0"); 
+      }, 1800);
+    }
+  }, 1400);
+}
+
+/* =====================================================================
+   HELPER LIFELINES
+   ===================================================================== */
+function useFiftyFifty() {
+  if (lifelinesUsed.fifty || isAnswered || !currentQuestions || !currentQuestions[curQIndex]) return;
+  lifelinesUsed.fifty = true;
+  updateLifelinesUI();
+  playSelectSound();
+
+  const correctIdx = currentQuestions[curQIndex].c;
+  const totalOptions = (currentQuestions[curQIndex].a || []).length;
+  const wrongIndices = [];
+  for (let i = 0; i < totalOptions; i++) {
+    if (i !== correctIdx) wrongIndices.push(i);
+  }
+
+  wrongIndices.sort(() => Math.random() - 0.5);
+  hiddenIndices = wrongIndices.slice(0, 2);
+
+  const btns = getAnswerButtons();
+  hiddenIndices.forEach(idx => {
+    if (btns[idx]) {
+      btns[idx].classList.add('gone');
+      btns[idx].disabled = true;
+    }
+  });
+}
+
+function usePhoneAFriend() {
+  if (lifelinesUsed.phone || isAnswered || !currentQuestions || !currentQuestions[curQIndex]) return;
+  lifelinesUsed.phone = true;
+  updateLifelinesUI();
+  playSelectSound();
+
+  const q = currentQuestions[curQIndex];
+  if (!q || !q.a) return;
+  const letters = ['أ', 'ب', 'ج', 'د'];
+  let friendChoice = q.c;
+
+  if (Math.random() >= 0.90) {
+    const wrongAvailable = [];
+    for (let i = 0; i < q.a.length; i++) {
+      if (i !== q.c && !hiddenIndices.includes(i)) wrongAvailable.push(i);
+    }
+    if (wrongAvailable.length > 0) {
+      friendChoice = wrongAvailable[Math.floor(Math.random() * wrongAvailable.length)];
+    }
+  }
+
+  const confidence = Math.floor(Math.random() * 25) + 75; 
+  const choiceLabel = `${letters[friendChoice]}: ${q.a[friendChoice]}`;
+
+  openModal(`
+    <div class="modal-icon no-print">📱</div>
+    <h2 class="modal-title no-print">اتصال بصديقة</h2>
+    <p class="modal-text no-print" style="font-size: 18px; margin-bottom: 8px;">"أهلاً! بعد حساب النتيجة أعتقد أن الحل الصحيح هو..."</p>
+    <div class="title-gold no-print" style="font-size: 26px; margin: 12px 0; direction: ltr;">${choiceLabel}</div>
+    <p class="no-print" style="color: var(--neon-cyan); font-weight: 700; margin-bottom: 24px;">نسبة ثقة الصديقة: ${confidence}%</p>
+    <button class="btn-action btn-gold no-print" onclick="closeModal()">شكراً لكِ! 🌸</button>
+  `);
+}
+
+function useAudiencePoll() {
+  if (lifelinesUsed.audience || isAnswered || !currentQuestions || !currentQuestions[curQIndex]) return;
+  lifelinesUsed.audience = true;
+  updateLifelinesUI();
+  playSelectSound();
+
+  const q = currentQuestions[curQIndex];
+  if (!q || !q.a) return;
+  const letters = ['أ', 'ب', 'ج', 'د'];
+  const optsCount = q.a.length;
+  const correctIdx = q.c;
+
+  const votes = new Array(optsCount).fill(0);
+  let remaining = 100;
+
+  votes[correctIdx] = Math.floor(Math.random() * 30) + 50;
+  remaining -= votes[correctIdx];
+
+  const wrongEligible = [];
+  for (let i = 0; i < optsCount; i++) {
+    if (i !== correctIdx && !hiddenIndices.includes(i)) wrongEligible.push(i);
+  }
+
+  wrongEligible.forEach((idx, k) => {
+    if (k === wrongEligible.length - 1) {
+      votes[idx] = remaining;
+    } else {
+      const take = Math.floor(Math.random() * (remaining / (wrongEligible.length - k)));
+      votes[idx] = take;
+      remaining -= take;
+    }
+  });
+
+  const barsHtml = votes.map((pct, i) => {
+    return `
+      <div class="bar-col">
+        <span class="bar-val">${pct}%</span>
+        <div class="bar-fill" id="pollBar${i}" style="height: 0;"></div>
+        <span class="bar-label">${letters[i]}</span>
+      </div>
+    `;
+  }).join('');
+
+  openModal(`
+    <div class="modal-icon no-print">👧🏻</div>
+    <h2 class="modal-title no-print">استطلاع رأي الطالبات</h2>
+    <div class="bars-container no-print">${barsHtml}</div>
+    <button class="btn-action btn-gold no-print" onclick="closeModal()">إغلاق ومتابعة الحل</button>
+  `);
+
+  setTimeout(() => {
+    votes.forEach((pct, i) => {
+      const bar = $('pollBar' + i);
+      if (bar) bar.style.height = `${pct * 1.5}px`;
+    });
+  }, 60);
+}
+
+function usePauseTimer() {
+  if (lifelinesUsed.pause || isAnswered || !currentQuestions || !currentQuestions[curQIndex]) return;
+  lifelinesUsed.pause = true;
+  clearInterval(timerInterval);
+  updateLifelinesUI();
+  playSelectSound();
+
+  const numEl = $('timerNum');
+  if (numEl) numEl.textContent = '⏳';
+  openModal(`
+    <div class="modal-icon no-print">⏳</div>
+    <h2 class="modal-title no-print">تم إيقاف المؤقت!</h2>
+    <p class="modal-text no-print">تم تجميد المؤقت لهذا السؤال فقط. خذي كامل وقتك لحساب النتيجة بشكل صحيح.</p>
+    <button class="btn-action btn-gold no-print" onclick="closeModal()">متابعة التفكير ✨</button>
+  `);
+}
+
+function useFazaaBomb() {
+  if (lifelinesUsed.bomb || isAnswered || !currentQuestions || !currentQuestions[curQIndex]) return;
+  lifelinesUsed.bomb = true;
+  updateLifelinesUI();
+  playBombSound(); 
+
+  const correctIdx = currentQuestions[curQIndex].c;
+  const btns = getAnswerButtons();
+
+  btns.forEach((b, idx) => {
+    if (idx !== correctIdx) {
+      b.classList.add('magic-smoke');
+      setTimeout(() => {
+        b.classList.add('gone');
+        b.disabled = true;
+      }, 500);
+    }
+  });
+
+  setTimeout(() => {
+    handleAnswer(correctIdx);
+  }, 750);
+}
+
+/* =====================================================================
+   GAME OVER / CERTIFICATE ENGINE
+   ===================================================================== */
+function handleGameOver(won, prizePoints) {
+  clearInterval(timerInterval);
+
+  const elapsedTotalSeconds = Math.floor((Date.now() - lessonStartTime) / 1000);
+  const minutes = Math.floor(elapsedTotalSeconds / 60);
+  const seconds = elapsedTotalSeconds % 60;
+  const formattedTime = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+
+  const studentName = $('studentName').value.trim();
+  const studentClass = $('studentClass').value.trim() || 'الصف السادس الابتدائي';
+  const isGirl = isFeminine(studentName);
+  const titleStr = currentTable === 'comp' ? 'تقييم شامل' : `جدول ${currentTable}`;
+
+  if (won) {
+    playFanfareSound();
+
+    const existingIdx = sessionCompletedLessons.findIndex(item => item.lessonTitle === titleStr);
+    const entry = {
+      lessonTitle: titleStr,
+      unitTitle: 'الرياضيات',
+      points: prizePoints,
+      date: new Date().toLocaleDateString('ar-SA'),
+      time: formattedTime,
+      level: gameLevel === 'advanced' ? 'متقدم ⚡' : 'مبتدئ 🌱'
+    };
+
+    if (existingIdx >= 0) {
+      sessionCompletedLessons[existingIdx] = entry;
+    } else {
+      sessionCompletedLessons.push(entry);
+    }
+    updatePrevCertBox();
+    saveCurrentAppState();
+  }
+
+  preparePrintCertificate(won, prizePoints, studentName, studentClass, isGirl, titleStr);
+
+  let nextBtnHtml = '';
+  if (typeof currentTable === 'number' && currentTable < 10) {
+    nextBtnHtml = `
+      <button class="btn-action btn-success" onclick="closeModal(); selectTable(${currentTable + 1})">
+        ▶ الجدول التالي
+      </button>
+    `;
+  }
+
+  let actionButtonsHtml = ``;
+
+  if (won) {
+    actionButtonsHtml += `
+      <button class="btn-action btn-print" onclick="triggerPrint()">
+        🖨️ طباعة الشهادة
+      </button>
+      <button class="btn-action btn-outline" onclick="previewCertificateModal()">
+        👁️ معاينة الشهادة
+      </button>
+      ${nextBtnHtml}
+      <button class="btn-action btn-gold" onclick="exitToMainMenu()">
+        🏠 القائمة الرئيسية
+      </button>
+    `;
+  } else {
+    actionButtonsHtml += `
+      <button class="btn-action btn-gold" onclick="restartLesson()">
+        🔄 إعادة المحاولة
+      </button>
+    `;
+    if (sessionCompletedLessons.length > 0) {
+      actionButtonsHtml += `
+        <button class="btn-action btn-print" onclick="showSavedCertificate()">
+          🖨️ طباعة شهادة إنجازاتي السابقة
+        </button>
+      `;
+    }
+    actionButtonsHtml += `
+      <button class="btn-action btn-outline" onclick="exitToMainMenu()">
+        🏠 القائمة الرئيسية
+      </button>
+    `;
+  }
+
+  let topMsg = '';
+  if (!won) {
+     let failTitleMsg = isGirl ? 'لا بأس يا بطلة، راجعي جدول الضرب وحاولي مرة أخرى لتطبعي شهادتك.' : 'لا بأس يا بطل، راجع جدول الضرب وحاول مرة أخرى لتطبع شهادتك.';
+     let failDescMsg = isGirl ? 'حاولي مرة أخرى لاجتياز هذا التحدي. نقاطك قبل الخسارة كانت:' : 'حاول مرة أخرى لاجتياز هذا التحدي. نقاطك قبل الخسارة كانت:';
+     
+     let reachedPoints = (curQIndex > 0 && currentPrizes) ? currentPrizes[curQIndex - 1] : "0";
+
+     topMsg = `
+       <h2 class="game-over-title" style="color:var(--danger); margin:0 0 10px 0;">انتهت اللعبة بإجابة خاطئة 😔</h2>
+       <p class="game-over-desc" style="color:var(--text-main); margin-bottom:15px; font-size:18px; font-weight:700;">${failDescMsg} <span style="color:var(--primary-gold-dark);">${reachedPoints}</span> نقطة<br><br>${failTitleMsg}</p>
+     `;
+  } else {
+     let successTitleMsg = isGirl ? 'أحسنتِ صنعاً! تتوج هذه الشهادة عبقرية الرياضيات:' : 'أحسنت صنعاً! تتوج هذه الشهادة عبقري الرياضيات:';
+     
+     topMsg = `
+       <div class="big" style="filter: drop-shadow(0 4px 10px rgba(236,64,122,0.3));">🏆 🌸 🏆</div>
+       <h2 class="game-over-title" style="color:var(--primary-gold-dark);">شهادة تفوق ونجاح!</h2>
+       <p class="game-over-desc" style="color:var(--text-main); font-size:18px; font-weight:700;">${successTitleMsg}</p>
+       <p class="game-over-title" style="color:var(--neon-cyan);font-size:32px; font-weight:900; margin:15px 0;">${studentName}</p>
+     `;
+  }
+
+  openModal(`
+    <div style="padding: 10px; max-height: 85vh; overflow-y: auto;">
+        <div class="no-print">
+            ${topMsg}
+        </div>
+        <div class="modal-actions no-print" style="margin-top:24px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+            ${actionButtonsHtml}
+        </div>
+    </div>
+  `);
+}
+
+/* =====================================================================
+   PREPARE CERTIFICATE DATA
+   ===================================================================== */
+function preparePrintCertificate(won, prizePoints, studentName, studentClass, isGirl, titleStr) {
+  let totalPoints = 0;
+  if (sessionCompletedLessons.length > 0) {
+    totalPoints = sessionCompletedLessons.reduce((sum, lesson) => sum + parseInt(lesson.points.replace(/,/g, '')), 0);
+  } else {
+    totalPoints = parseInt(prizePoints.replace(/,/g, ''));
+  }
+  const totalPointsFormatted = totalPoints.toLocaleString('en-US');
+
+  const printDate = document.querySelector('#printableCertificate #printDate');
+  if (printDate) {
+    printDate.textContent = `التاريخ: ${new Date().toLocaleDateString('ar-SA')}`;
+  }
+
+  const printStudentName = document.querySelector('#printableCertificate #printStudentName');
+  if (printStudentName) {
+    printStudentName.textContent = studentName || 'طالب المستقبل';
+  }
+  
+  const printStudentClass = document.querySelector('#printableCertificate #printStudentClass');
+  if (printStudentClass) {
+    printStudentClass.textContent = studentClass || 'الصف الدراسي';
+  }
+
+  const printAwardIntro = document.querySelector('#printableCertificate #printAwardIntro');
+  if (printAwardIntro) {
+    printAwardIntro.textContent = isGirl
+      ? `تَشْهَدُ إدارةُ المدرسةِ ومُعَلِّمَةُ المادةِ بأنّ الطالبةَ المبدعة:`
+      : `تَشْهَدُ إدارةُ المدرسةِ ومُعَلِّمَةُ المادةِ بأنّ الطالبَ المبدع:`;
+  }
+
+  const printAwardBody = document.querySelector('#printableCertificate #printAwardBody');
+  if (printAwardBody) {
+    printAwardBody.textContent = isGirl
+      ? `نهنئكِ يا بطلة على هذا الإنجاز الرائع! نشكر لكِ جهدك ومثابرتك في إتقان جداول الضرب، ونتمنى لكِ مستقبلاً مشرقاً مليئاً بالنجاح والتفوق. لقد حصلتِ على ${totalPointsFormatted} نقطة بجدارة!`
+      : `نهنئك يا بطل على هذا الإنجاز الرائع! نشكر لك جهدك ومثابرتك في إتقان جداول الضرب، ونتمنى لك مستقبلاً مشرقاً مليئاً بالنجاح والتفوق. لقد حصلت على ${totalPointsFormatted} نقطة بجدارة!`;
+  }
+
+  const certStamps = document.querySelectorAll('#printableCertificate .cert-stamp');
+  certStamps.forEach(stamp => {
+    stamp.innerHTML = `ختم التميز<br>${totalPointsFormatted}`;
+  });
+
+  const tableWrapper = document.querySelector('#printableCertificate #printLessonsTableWrapper');
+  if (tableWrapper) {
+    if (sessionCompletedLessons.length > 0) {
+      tableWrapper.innerHTML = `
+        <div class="cert-inner-wrapper" style="page-break-before: always; margin-top: 20px;">
+          <div style="font-weight: 700; font-size: 16px; color: #92400e; text-align: right; margin-bottom: 10px;">
+            سِجِلُّ الإنجازاتِ المجتازةِ في مسابقة عبقري الضرب:
+          </div>
+          <table class="cert-lessons-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>الجدول</th>
+                <th>المستوى</th>
+                <th>الوقت</th>
+                <th>النقاط</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${sessionCompletedLessons.map((item, idx) => `
+                <tr>
+                  <td>${idx + 1}</td>
+                  <td>${item.lessonTitle}</td>
+                  <td style="font-weight: bold; color: ${item.level.includes('متقدم') ? '#10b981' : '#64748b'};">${item.level}</td>
+                  <td dir="ltr" style="font-weight: bold;">${item.time}</td>
+                  <td style="font-weight: 900; color: #92400e;">${item.points}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else {
+      tableWrapper.innerHTML = '';
+    }
+  }
+}
+
+/* =====================================================================
+   PRINT TRIGGER & MODALS
+   ===================================================================== */
+function triggerPrint() {
+  playSelectSound();
+  window.print();
+}
+
+function previewCertificateModal() {
+  playSelectSound();
+  const printElem = $('printableCertificate');
+  if (!printElem) return;
+
+  let nextBtnHtml = '';
+  if (typeof currentTable === 'number' && currentTable < 10) {
+    nextBtnHtml = `
+      <button class="btn-action btn-success no-print" onclick="closeModal(); selectTable(${currentTable + 1})">
+        ▶ الجدول التالي
+      </button>
+    `;
+  }
+
+  openModal(`
+    <div style="padding: 10px; max-height: 85vh; overflow-y: auto;">
+        <h2 class="modal-title no-print">معاينة الشهادة المعتمدة</h2>
+        <div class="cert-preview-card no-print">
+          ${printElem.innerHTML}
+        </div>
+        <div class="actions-cluster no-print" style="margin-top:24px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+          <button class="btn-action btn-print" onclick="triggerPrint()">
+            🖨️ طباعة الشهادة الآن
+          </button>
+          ${nextBtnHtml}
+          <button class="btn-action btn-gold" onclick="exitToMainMenu()">
+            🏠 القائمة الرئيسية
+          </button>
+          <button class="btn-action btn-outline" onclick="closeModal()">
+            ❌ إغلاق والعودة
+          </button>
+        </div>
+    </div>
+  `);
+}
+
+function showSavedCertificate() {
+  playSelectSound();
+  
+  const studentName = ($('studentName')?.value || '').trim();
+  try {
+    const localHist = localStorage.getItem('whowants_history_math');
+    if (localHist) {
+      const state = JSON.parse(localHist);
+      if (state.studentName && state.studentName !== studentName && studentName !== '') {
+        alert("لقد قمتِ بتغيير اسم البطلة، لا يمكن عرض شهادة سابقة بهذا الاسم. يرجى لعب تحدي واحد على الأقل لإنشاء شهادة جديدة.");
+        sessionCompletedLessons = []; 
+        updatePrevCertBox();
+        return;
+      }
+    }
+  } catch(e) {}
+  
+  const studentClass = ($('studentClass')?.value || '').trim() || 'الصف الدراسي';
+  const nameToUse = studentName || 'طالب المستقبل';
+  const isGirl = isFeminine(nameToUse);
+  const titleStr = currentTable === 'comp' ? 'تقييم شامل' : `جدول ${currentTable || 1}`;
+
+  preparePrintCertificate(true, '1,000,000', nameToUse, studentClass, isGirl, titleStr);
+  
+  const printElem = $('printableCertificate');
+  if (!printElem) return;
+
+  openModal(`
+    <div style="padding: 10px; max-height: 85vh; overflow-y: auto;">
+        <h2 class="modal-title no-print">معاينة الشهادة المعتمدة</h2>
+        <div class="cert-preview-card no-print">
+          ${printElem.innerHTML}
+        </div>
+        <div class="actions-cluster no-print" style="margin-top:24px; display:flex; flex-wrap:wrap; justify-content:center; gap:12px;">
+          <button class="btn-action btn-print" onclick="triggerPrint()">
+            🖨️ طباعة الشهادة الآن
+          </button>
+          <button class="btn-action btn-gold" onclick="closeModal()">
+            ❌ إغلاق
+          </button>
+        </div>
+    </div>
+  `);
+}
+
+function confirmExitGame() {
+  playSelectSound();
+  openModal(`
+    <div class="no-print">
+      <div class="modal-icon">🏠</div>
+      <h2 class="modal-title">العودة للقائمة</h2>
+      <p class="modal-text">هل تريدين بالتأكيد مغادرة التحدي والعودة للرئيسية؟</p>
+      <div class="actions-cluster">
+        <button class="btn-action btn-gold" onclick="exitToMainMenu()">
+          نعم، العودة للرئيسية
+        </button>
+        <button class="btn-action btn-outline" onclick="closeModal()">
+          إلغاء ومتابعة اللعب
+        </button>
+      </div>
+    </div>
+  `);
+}
+
+function exitApplication() {
+  playSelectSound();
+  openModal(`
+    <div class="no-print">
+      <div class="modal-icon">🚪</div>
+      <h2 class="modal-title">خروج من اللعبة</h2>
+      <p class="modal-text">هل أنتِ متأكدة أنكِ تريدين الخروج من اللعبة نهائياً؟ 🌸</p>
+      <div class="actions-cluster">
+        <button class="btn-action btn-danger-outline" style="background:var(--danger); color:#fff !important;" onclick="window.close(); document.body.innerHTML='<div style=\\'display:flex; height:100vh; align-items:center; justify-content:center; flex-direction:column; background:var(--bg-dark);\\'><h1 class=\\'title-gold\\'>إلى اللقاء يا بطلة! 🌸</h1><p style=\\'color:var(--text-main); font-weight:bold;\\'>تم إغلاق اللعبة بنجاح.</p></div>';">نعم، خروج</button>
+        <button class="btn-action btn-outline" onclick="closeModal()">إلغاء</button>
+      </div>
+    </div>
+  `);
+}
+
+function exitToMainMenu() {
+  clearInterval(timerInterval);
+  closeModal();
+  const startExit = $('startExitBtn');
+  if(startExit) startExit.classList.remove('hidden');
+  $('game').classList.add('hidden');
+  $('start').classList.remove('hidden');
+  updatePrevCertBox();
+  playSelectSound();
+}
+
+function confirmRestartLesson() {
+  playSelectSound();
+  openModal(`
+    <div class="no-print">
+      <div class="modal-icon">🔄</div>
+      <h2 class="modal-title">إعادة التحدي</h2>
+      <p class="modal-text">هل تريدين بدء أسئلة هذا الجدول من البداية وتجديد وسائل المساعدة؟ ✨</p>
+      <div class="actions-cluster">
+        <button class="btn-action btn-gold" onclick="restartLesson()">
+          نعم، أعد التحدي
+        </button>
+        <button class="btn-action btn-outline" onclick="closeModal()">
+          إلغاء
+        </button>
+      </div>
+    </div>
+  `);
+}
+
+function openModal(htmlContent) {
+  const modalBox = $('modalBox');
+  const modalOverlay = $('gameModal');
+  if (modalBox && modalOverlay) {
+    modalBox.innerHTML = htmlContent;
+    modalOverlay.classList.remove('hidden');
+  }
+}
+
+function closeModal() {
+  const modalOverlay = $('gameModal');
+  if (modalOverlay) {
+    modalOverlay.classList.add('hidden');
+  }
+  playSelectSound();
+}
+</script>
+</body>
+</html>
